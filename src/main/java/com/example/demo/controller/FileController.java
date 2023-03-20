@@ -104,7 +104,7 @@ public class FileController {
 //        setCache(Constants.FILES_KEY, JSONUtil.toJsonStr(files));
 
         // 最简单的方式：直接清空缓存
-        flushRedis(Constants.FILES_KEY);
+//        flushRedis(Constants.FILES_KEY);
 
         return url;
     }
