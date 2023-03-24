@@ -71,19 +71,22 @@ public class EchartsController {
     @GetMapping("/file/front/all")
 //    @Cacheable(value = "files" ,key = "'frontAll'")
     public Result frontAll() {
-        // 1. 从缓存获取数据
-        String jsonStr = stringRedisTemplate.opsForValue().get(Constants.FILES_KEY);
         List<Files> files;
-        if (StrUtil.isBlank(jsonStr)) {  // 2. 取出来的json是空的
-            files = fileMapper.selectList(null);  // 3. 从数据库取出数据
-            // 4. 再去缓存到redis
-            stringRedisTemplate.opsForValue().set(Constants.FILES_KEY, JSONUtil.toJsonStr(files));
-        } else {
-            // 减轻数据库的压力
-            // 5. 如果有, 从redis缓存中获取数据
-            files = JSONUtil.toBean(jsonStr, new TypeReference<List<Files>>() {
-            }, true);
-        }
+        files = fileMapper.selectList(null);  // 3. 从数据库取出数据
+
+        // 1. 从缓存获取数据
+//        String jsonStr = stringRedisTemplate.opsForValue().get(Constants.FILES_KEY);
+//        List<Files> files;
+//        if (StrUtil.isBlank(jsonStr)) {  // 2. 取出来的json是空的
+//            files = fileMapper.selectList(null);  // 3. 从数据库取出数据
+//            // 4. 再去缓存到redis
+//            stringRedisTemplate.opsForValue().set(Constants.FILES_KEY, JSONUtil.toJsonStr(files));
+//        } else {
+//            // 减轻数据库的压力
+//            // 5. 如果有, 从redis缓存中获取数据
+//            files = JSONUtil.toBean(jsonStr, new TypeReference<List<Files>>() {
+//            }, true);
+//        }
         return Result.success(files);
     }
 

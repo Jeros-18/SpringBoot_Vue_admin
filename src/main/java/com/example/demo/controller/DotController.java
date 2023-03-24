@@ -58,11 +58,13 @@ public class DotController {
     }
 
     @GetMapping("/page")
-    public Result findPage(@RequestParam Integer pageNum,
+    public Result findPage(@RequestParam String img,
+            @RequestParam Integer pageNum,
                                 @RequestParam Integer pageSize) {
         QueryWrapper<Dot> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
         return Result.success(dotService.page(new Page<>(pageNum, pageSize), queryWrapper));
+
     }
 
 }
