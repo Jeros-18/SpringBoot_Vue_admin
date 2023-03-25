@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.DotMapper">
+    <select id="getByBrand" resultType="com.example.demo.entity.Dot">
+        select *
+        from dot
+        where brand like #{brand}
+    </select>
+    <select id="findPage" resultType="com.example.demo.entity.Dot">
+        select * from dot
+
+        <where>
+            <if test="brand != null and brand != ''">
+                and brand like concat('%', #{brand},'%')
+            </if>
+        </where>
+    </select>
 
 </mapper>

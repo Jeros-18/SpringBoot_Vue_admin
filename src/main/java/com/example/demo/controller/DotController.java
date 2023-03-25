@@ -2,8 +2,15 @@ package com.example.demo.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.demo.entity.Course;
+import com.example.demo.entity.vo.DotQuery;
+import com.example.demo.mapper.DotMapper;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.common.Result;
@@ -27,6 +34,9 @@ public class DotController {
 
     @Resource
     private IDotService dotService;
+
+    @Autowired
+    private DotMapper dotMapper;
 
     // 新增或者更新
     @PostMapping
@@ -57,15 +67,54 @@ public class DotController {
         return Result.success(dotService.getById(id));
     }
 
+//    @GetMapping("/page")
+//    public Result findPage(@RequestParam String img,
+//            @RequestParam Integer pageNum,
+//                                @RequestParam Integer pageSize) {
+//        QueryWrapper<Dot> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.orderByDesc("id");
+//        return Result.success(dotService.page(new Page<>(pageNum, pageSize), queryWrapper));
+//
+//    }
+
     @GetMapping("/page")
-    public Result findPage(@RequestParam String img,
-            @RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize) {
-        QueryWrapper<Dot> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("id");
-        return Result.success(dotService.page(new Page<>(pageNum, pageSize), queryWrapper));
+    public Result findPage(@RequestParam String brand,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
+
+        Page<Dot> page = dotService.findPage(new Page<>(pageNum, pageSize), brand);
+        return Result.success(page);
+    }
+//    @GetMapping("/brand2")
+//    public Result getByBrand2() {
+//        QueryWrapper<Object> wrapper = new QueryWrapper<>();
+//        wrapper.eq("brand","米其林");
+//        dotService.getBaseMapper(wrapper);
+//
+//    }
+
+    @GetMapping("/brand/{brand}")
+    public Result getByBrand(@PathVariable String brand) {
+        System.out.println(dotService.getByBrand(brand));
+        return Result.success(dotService.getByBrand(brand));
 
     }
+
+    @GetMapping("/getBrand")
+    public Result findBrand(@RequestBody DotQuery dotQuery){
+        String brand = dotQuery.getBrand();
+
+        QueryWrapper<Dot> wrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(brand)) {
+            wrapper.eq("brand", brand);
+        }
+        Page<Dot> page = new Page<>(1,4);
+        dotService.page(page,wrapper);
+
+        return Result.success(dotService.page(new Page<>(1, 4), wrapper));
+    }
+
+
 
 }
 

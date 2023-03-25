@@ -30,6 +30,8 @@ public class Dot implements Serializable {
 
     private String img;
 
+    private String brand;
+
     private String local;
 
     private String fact;

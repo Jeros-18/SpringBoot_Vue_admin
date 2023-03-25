@@ -5,6 +5,8 @@ import com.example.demo.entity.Course;
 import com.example.demo.entity.Dot;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -14,5 +16,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-03-20
  */
 public interface IDotService extends IService<Dot> {
-//    Page<Dot> findPage(Page<Dot> page, String name);
+
+    List<Dot> getByBrand(String brand);
+
+    Page<Dot> findPage(Page<Dot> page, String brand);
 }
