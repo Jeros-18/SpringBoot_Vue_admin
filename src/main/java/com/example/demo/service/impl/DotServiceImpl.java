@@ -35,6 +35,11 @@ public class DotServiceImpl extends ServiceImpl<DotMapper, Dot> implements IDotS
         return dotMapper.findPage(page, brand);
     }
 
+    @Override
+    public List<Dot> recall() {
+        return dotMapper.recall();
+    }
+
 
 //
 //    @Override

@@ -23,4 +23,6 @@ public interface DotMapper extends BaseMapper<Dot> {
    List<Dot> getByBrand(@Param("brand") String brand);
 
    Page<Dot> findPage(Page<Dot> page, @Param("brand") String brand);
+
+   List<Dot> recall();
 }

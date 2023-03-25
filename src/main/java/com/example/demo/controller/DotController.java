@@ -100,6 +100,14 @@ public class DotController {
 
     }
 
+    @GetMapping("/recall")
+    public Result recall() {
+
+        return Result.success(dotService.recall());
+
+    }
+
+
     @GetMapping("/getBrand")
     public Result findBrand(@RequestBody DotQuery dotQuery){
         String brand = dotQuery.getBrand();

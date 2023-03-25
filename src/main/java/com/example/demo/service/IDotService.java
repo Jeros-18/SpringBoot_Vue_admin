@@ -20,4 +20,6 @@ public interface IDotService extends IService<Dot> {
     List<Dot> getByBrand(String brand);
 
     Page<Dot> findPage(Page<Dot> page, String brand);
+
+    List<Dot> recall();
 }

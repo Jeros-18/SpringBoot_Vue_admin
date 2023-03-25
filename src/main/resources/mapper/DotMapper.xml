@@ -16,4 +16,10 @@
         </where>
     </select>
 
+    <select id="recall" resultType="com.example.demo.entity.Dot">
+        SELECT * FROM dot WHERE recall=1
+
+
+    </select>
+
 </mapper>
