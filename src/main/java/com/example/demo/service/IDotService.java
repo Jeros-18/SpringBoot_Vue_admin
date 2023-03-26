@@ -22,4 +22,6 @@ public interface IDotService extends IService<Dot> {
     Page<Dot> findPage(Page<Dot> page, String brand);
 
     List<Dot> recall();
+
+    Page<Dot> findPageLocal(Page<Dot> page, Integer localid);
 }

@@ -7,6 +7,7 @@ import com.example.demo.entity.vo.DotQuery;
 import com.example.demo.mapper.DotMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -92,6 +93,18 @@ public class DotController {
 //        dotService.getBaseMapper(wrapper);
 //
 //    }
+
+    @Transactional
+    @GetMapping("/pageLocal")
+    public Result findPage2(@RequestParam(required = false) Integer localid,
+                           @RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize) {
+
+        Page<Dot> page = dotService.findPageLocal(new Page<>(pageNum, pageSize), localid);
+        return Result.success(page);
+    }
+
+
 
     @GetMapping("/brand/{brand}")
     public Result getByBrand(@PathVariable String brand) {

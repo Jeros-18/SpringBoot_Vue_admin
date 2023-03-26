@@ -25,4 +25,6 @@ public interface DotMapper extends BaseMapper<Dot> {
    Page<Dot> findPage(Page<Dot> page, @Param("brand") String brand);
 
    List<Dot> recall();
+
+    Page<Dot> findPageLocal(Page<Dot> page, @Param("localid") Integer localid);
 }

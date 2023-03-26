@@ -21,5 +21,18 @@
 
 
     </select>
+    <select id="findPageLocal" resultType="com.example.demo.entity.Dot" parameterType="int">
+        select d.*
+        from dot d
+        left join location l
+        on d.localid = l.id
+        where localid = #{localid}
+<!--        <where>-->
+<!--            <if test="localid != null and localid != ''">-->
+<!--                and localid like concat('%', #{localid},'%')-->
+<!--            </if>-->
+<!--        </where>-->
+
+    </select>
 
 </mapper>

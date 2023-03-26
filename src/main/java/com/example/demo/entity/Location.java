@@ -16,34 +16,22 @@ import lombok.Setter;
  * </p>
  *
  * @author jahui
- * @since 2023-03-20
+ * @since 2023-03-26
  */
 @Getter
 @Setter
-  @ApiModel(value = "Dot对象", description = "")
-public class Dot implements Serializable {
+  @ApiModel(value = "Location对象", description = "")
+public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
-    private String img;
-
-    private String brand;
-
-    private String local;
-
-    private String fact;
-
-    private Integer year;
+    private String name;
 
     @TableLogic
-    private Boolean isDelete;
+    private Boolean idDelete;
 
-    private Boolean recall;
-
-
-    private Integer localid;
 
 }
