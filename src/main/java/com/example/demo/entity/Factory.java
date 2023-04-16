@@ -3,8 +3,6 @@ package com.example.demo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,12 +14,12 @@ import lombok.Setter;
  * </p>
  *
  * @author jahui
- * @since 2023-03-26
+ * @since 2023-04-16
  */
 @Getter
 @Setter
-  @ApiModel(value = "Own对象", description = "")
-public class Own implements Serializable {
+  @ApiModel(value = "Factory对象", description = "")
+public class Factory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,15 +28,6 @@ public class Own implements Serializable {
 
     private String name;
 
-    private String email;
-
-    private String phone;
-
-    private String address;
-
-    private Integer dotId;
-
-    @TableLogic
     private Boolean isDelete;
 
 

@@ -31,7 +31,7 @@ public class Location implements Serializable {
     private String name;
 
     @TableLogic
-    private Boolean idDelete;
+    private Boolean isDelete;
 
 
 }
