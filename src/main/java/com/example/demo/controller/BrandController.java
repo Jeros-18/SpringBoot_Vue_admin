@@ -64,6 +64,9 @@ public class BrandController {
         queryWrapper.orderByDesc("id");
         return Result.success(brandService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
-
+    @GetMapping("/getBrandNum")
+    public Result getBrandNum(){
+        return Result.success(brandService.getBrandNum());
+    }
 }
 
