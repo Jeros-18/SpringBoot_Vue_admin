@@ -136,6 +136,9 @@ public class DotController {
     }
 
 
-
+    @GetMapping("/getTireNum")
+    public Result getTireNum(){
+        return Result.success(dotService.getTireNum());
+    }
 }
 

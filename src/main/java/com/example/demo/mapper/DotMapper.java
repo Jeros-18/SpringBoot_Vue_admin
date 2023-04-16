@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.entity.Course;
 import com.example.demo.entity.Dot;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -27,4 +28,6 @@ public interface DotMapper extends BaseMapper<Dot> {
    List<Dot> recall();
 
     Page<Dot> findPageLocal(Page<Dot> page, @Param("localid") Integer localid);
+
+    Integer getTireNum();
 }

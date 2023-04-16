@@ -45,6 +45,11 @@ public class DotServiceImpl extends ServiceImpl<DotMapper, Dot> implements IDotS
         return dotMapper.findPageLocal(page, localid);
     }
 
+    @Override
+    public Integer getTireNum() {
+        return dotMapper.getTireNum();
+    }
+
 
 //
 //    @Override

@@ -47,4 +47,10 @@
 
     </select>
 
+
+    <!--    统计有效轮胎数量-->
+    <select id="getTireNum" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM Dot
+        WHERE is_delete=0;
+    </select>
 </mapper>

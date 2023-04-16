@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.entity.Course;
 import com.example.demo.entity.Dot;
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface IDotService extends IService<Dot> {
     List<Dot> recall();
 
     Page<Dot> findPageLocal(Page<Dot> page, Integer localid);
+
+    Integer getTireNum();
 }
