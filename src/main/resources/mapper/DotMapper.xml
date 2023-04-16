@@ -9,10 +9,16 @@
 
 <!--    管理员界面-dot信息管理的数据-->
     <select id="findPage" resultType="com.example.demo.entity.Dot">
-        SELECT d.*, o.name as ownerName
+        SELECT d.*, o.name as ownerName,brand.name as brandName,factory.name as factoryName,location.name as locationName
         FROM dot d
         LEFT JOIN own o
         ON d.owner_id = o.id
+        left join brand
+        on d.brand_id = brand.id
+        left join factory
+        on d.factory_id = factory.id
+        left join location
+        on d.localid = location.id
         <where>
             <if test="brand != null and brand != ''">
                 and brand like concat('%', #{brand},'%')

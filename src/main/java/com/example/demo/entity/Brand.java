@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -28,5 +30,6 @@ public class Brand implements Serializable {
 
     private String name;
 
-
+    @TableLogic
+    private Boolean isDelete;
 }

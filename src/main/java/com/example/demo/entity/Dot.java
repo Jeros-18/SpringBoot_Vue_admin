@@ -31,11 +31,12 @@ public class Dot implements Serializable {
 
     private String img;
 
-    private String brand;
-
-    private String local;
-
-    private String fact;
+    @TableField(exist = false)
+    private String brandName;
+    @TableField(exist = false)
+    private String locationName;
+    @TableField(exist = false)
+    private String factoryName;
 
     private Integer year;
 
@@ -48,6 +49,8 @@ public class Dot implements Serializable {
     private Integer localid;
 
     private Integer ownerId;
+    private Integer brandId;
+    private Integer factoryId;
 
     @TableField(exist = false)
     private String ownerName;
