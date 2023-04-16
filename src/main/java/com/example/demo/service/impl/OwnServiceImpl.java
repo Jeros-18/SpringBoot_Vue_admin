@@ -25,4 +25,10 @@ public class OwnServiceImpl extends ServiceImpl<OwnMapper, Own> implements IOwnS
     public Own getDot(Integer dotid) {
         return ownMapper.getDot(dotid);
     }
+
+    @Override
+    public Integer getOwnerNum() {
+        return ownMapper.getOwnerNum();
+
+    }
 }

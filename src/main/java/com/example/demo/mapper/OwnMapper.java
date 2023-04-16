@@ -15,4 +15,6 @@ import org.apache.ibatis.annotations.Param;
 public interface OwnMapper extends BaseMapper<Own> {
 
     Own getDot(@Param("dotid") Integer dotid);
+
+    Integer getOwnerNum();
 }

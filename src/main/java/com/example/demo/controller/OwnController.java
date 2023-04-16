@@ -71,5 +71,10 @@ public class OwnController {
 
         return Result.success(ownService.getDot(dotid));
     }
+
+    @GetMapping("/getOwnerNum")
+    public Result getOwnerNum(){
+        return Result.success(ownService.getOwnerNum());
+    }
 }
 

@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IOwnService extends IService<Own> {
 
     Own getDot(Integer dotid);
+
+    Integer getOwnerNum();
 }
