@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 
@@ -47,5 +48,8 @@ public class Dot implements Serializable {
     private Integer localid;
 
     private Integer ownerId;
+
+    @TableField(exist = false)
+    private String ownerName;
 
 }

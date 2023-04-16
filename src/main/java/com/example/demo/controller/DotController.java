@@ -97,8 +97,8 @@ public class DotController {
     @Transactional
     @GetMapping("/pageLocal")
     public Result findPage2(@RequestParam(required = false) Integer localid,
-                           @RequestParam Integer pageNum,
-                           @RequestParam Integer pageSize) {
+                            @RequestParam Integer pageNum,
+                            @RequestParam Integer pageSize) {
 
         Page<Dot> page = dotService.findPageLocal(new Page<>(pageNum, pageSize), localid);
         return Result.success(page);

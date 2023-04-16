@@ -6,13 +6,19 @@
         from dot
         where brand like #{brand}
     </select>
-    <select id="findPage" resultType="com.example.demo.entity.Dot">
-        select * from dot
 
+<!--    管理员界面-dot信息管理的数据-->
+    <select id="findPage" resultType="com.example.demo.entity.Dot">
+        SELECT d.*, o.name as ownerName
+        FROM dot d
+        LEFT JOIN own o
+        ON d.owner_id = o.id
         <where>
             <if test="brand != null and brand != ''">
                 and brand like concat('%', #{brand},'%')
             </if>
+
+
         </where>
     </select>
 
