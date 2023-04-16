@@ -205,5 +205,8 @@ public class UserController {
     }
 
 
-
+    @GetMapping("/getUserNum")
+    public Result getUserNum(){
+        return Result.success(userService.getUserNum());
+    }
 }

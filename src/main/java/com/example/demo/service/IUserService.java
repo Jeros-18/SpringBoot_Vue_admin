@@ -5,6 +5,7 @@ import com.example.demo.controller.dto.UserDTO;
 import com.example.demo.controller.dto.UserPasswordDTO;
 import com.example.demo.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.swagger.models.auth.In;
 
 /**
  * <p>
@@ -23,4 +24,6 @@ public interface IUserService extends IService<User> {
     void updatePassword(UserPasswordDTO userPasswordDTO);
 
     Page<User> findPage(Page<User> objectPage, String username, String email, String address);
+
+    Integer getUserNum();
 }

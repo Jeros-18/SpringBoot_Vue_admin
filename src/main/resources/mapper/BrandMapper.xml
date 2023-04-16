@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.BrandMapper">
 
-    <!--    统计全部用户数量-->
+    <!--    统计有效品牌数量-->
     <select id="getBrandNum" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM brand
         WHERE is_delete=0;

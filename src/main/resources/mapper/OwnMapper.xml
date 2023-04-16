@@ -6,7 +6,7 @@
         SELECT * FROM own WHERE dot_id=#{dotid}
     </select>
 
-<!--    统计全部用户数量-->
+<!--    统计有效车主数量-->
     <select id="getOwnerNum" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM own
         WHERE own.is_delete=0;

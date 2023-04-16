@@ -21,4 +21,6 @@ public interface UserMapper extends BaseMapper<User> {
     int updatePassword(UserPasswordDTO userPasswordDTO);
 
     Page<User> findPage(Page<User> page, @Param("username") String username, @Param("email") String email, @Param("address") String address);
+
+    Integer getUserNum();
 }
