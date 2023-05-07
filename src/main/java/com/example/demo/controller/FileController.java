@@ -136,10 +136,14 @@ public class FileController {
         }
 
         String kuangUrl = null;
+        String recogUrl = null;
+
         String url;
         int i=1;
 
-        kuangUrl="http://" + serverIp + ":9090/exp"+(i++)+"/" + fileUUID;
+//        kuangUrl="http://" + serverIp + ":9090/exp"+(i++)+"/" + fileUUID;
+        kuangUrl="http://" + serverIp + ":9090/exp"+"/" + fileUUID;
+        recogUrl="http://" + serverIp + ":9090/result"+"/" + fileUUID;
         // 获取文件的md5
         String md5 = SecureUtil.md5(file.getInputStream());
         // 从数据库查询是否存在相同的记录
@@ -162,15 +166,17 @@ public class FileController {
         saveFile.setMd5(md5);
         fileMapper.insert(saveFile);
 
-        // 存储数据库
+        // 存储临时表，为了显示检测和识别效果
         Img img = new Img();
         img.setName(originalFilename);
         img.setYuan(url);
         img.setKuang(kuangUrl);
+        img.setRecog(recogUrl);
         imgMapper.insert(img);
 
         detect(request);
         detect2(request);
+        recognise();
 
         return url;
     }
@@ -200,7 +206,7 @@ public class FileController {
         }
 
 
-        System.out.println("controller任务已完成");
+        System.out.println("检测框选定位任务已完成");
     }
 
 //    裁剪
@@ -228,8 +234,36 @@ public void  detect2(HttpServletRequest request){
     }
 
 
-    System.out.println("controller任务已完成");
+    System.out.println("裁剪任务已完成");
 }
+
+    //    识别
+    public void  recognise(){
+
+
+        try {
+            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
+            // 我猜是通过命令行指令？
+            String[] args = new String[]{"python","D:\\PycharmProjects\\PaddleOCR\\cai2.py"};
+            // 执行py文件
+            Process process = Runtime.getRuntime().exec(args);
+            // 获取输出的结果（打印在控制台的字符？）
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = in.readLine();
+            while(line!=null){
+                // 显示结果
+                System.out.println("springboot执行python结果:"+line);
+                line = in.readLine();
+            }
+            in.close();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("识别任务已完成");
+    }
     /**
      * 文件下载接口   http://localhost:9090/file/{fileUUID}
      * @param fileUUID
