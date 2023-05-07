@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
 import com.example.demo.entity.Files;
+import com.example.demo.entity.Img;
 import com.example.demo.mapper.FileMapper;
+import com.example.demo.mapper.ImgMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -18,9 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -41,6 +46,9 @@ public class FileController {
 
     @Resource
     private FileMapper fileMapper;
+
+    @Resource
+    private ImgMapper imgMapper;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -112,7 +120,7 @@ public class FileController {
     }
 
     @PostMapping("/upload2")
-    public String upload2(@RequestParam MultipartFile file) throws IOException {
+    public String upload2(@RequestParam MultipartFile file,HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String type = FileUtil.extName(originalFilename);
         long size = file.getSize();
@@ -127,7 +135,11 @@ public class FileController {
             parentFile.mkdirs();
         }
 
+        String kuangUrl = null;
         String url;
+        int i=1;
+
+        kuangUrl="http://" + serverIp + ":9090/exp"+(i++)+"/" + fileUUID;
         // 获取文件的md5
         String md5 = SecureUtil.md5(file.getInputStream());
         // 从数据库查询是否存在相同的记录
@@ -138,10 +150,9 @@ public class FileController {
             // 上传文件到磁盘
             file.transferTo(uploadFile);
             // 数据库若不存在重复文件，则不删除刚才上传的文件
-            url = "http://" + serverIp + ":9090/file/tire/" + fileUUID;
+            url = "http://" + serverIp + ":9090/file/" + fileUUID;
+
         }
-
-
         // 存储数据库
         Files saveFile = new Files();
         saveFile.setName(originalFilename);
@@ -151,10 +162,74 @@ public class FileController {
         saveFile.setMd5(md5);
         fileMapper.insert(saveFile);
 
+        // 存储数据库
+        Img img = new Img();
+        img.setName(originalFilename);
+        img.setYuan(url);
+        img.setKuang(kuangUrl);
+        imgMapper.insert(img);
+
+        detect(request);
+        detect2(request);
 
         return url;
     }
 
+    // 目标检测有定位的图片，+定位信息
+    public void  detect(HttpServletRequest request){
+
+
+        try {
+            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
+            // 我猜是通过命令行指令？
+            String[] args = new String[]{"python","D:\\PycharmProjects\\yolov5-6.0\\detect.py"};
+            // 执行py文件
+            Process process = Runtime.getRuntime().exec(args);
+            // 获取输出的结果（打印在控制台的字符？）
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = in.readLine();
+            while(line!=null){
+                // 显示结果
+                System.out.println("springboot执行python结果:"+line);
+                line = in.readLine();
+            }
+            in.close();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("controller任务已完成");
+    }
+
+//    裁剪
+public void  detect2(HttpServletRequest request){
+
+
+    try {
+        // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
+        // 我猜是通过命令行指令？
+        String[] args = new String[]{"python","D:\\PycharmProjects\\PaddleOCR\\cai2.py"};
+        // 执行py文件
+        Process process = Runtime.getRuntime().exec(args);
+        // 获取输出的结果（打印在控制台的字符？）
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line = in.readLine();
+        while(line!=null){
+            // 显示结果
+            System.out.println("springboot执行python结果:"+line);
+            line = in.readLine();
+        }
+        in.close();
+        process.waitFor();
+    } catch (IOException | InterruptedException e) {
+        e.printStackTrace();
+    }
+
+
+    System.out.println("controller任务已完成");
+}
     /**
      * 文件下载接口   http://localhost:9090/file/{fileUUID}
      * @param fileUUID
