@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -48,6 +49,11 @@ public class DotServiceImpl extends ServiceImpl<DotMapper, Dot> implements IDotS
     @Override
     public Integer getTireNum() {
         return dotMapper.getTireNum();
+    }
+
+    @Override
+    public List<Map<String, Integer>> getBrandPie() {
+        return dotMapper.getBrandPie();
     }
 
 

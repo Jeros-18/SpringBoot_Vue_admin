@@ -26,4 +26,5 @@ mybatis-plus:
 files:
   upload:
     path: D:/files/
+    path2: D:/files/tire/
 #    path: /home/files/

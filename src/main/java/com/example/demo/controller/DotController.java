@@ -140,5 +140,10 @@ public class DotController {
     public Result getTireNum(){
         return Result.success(dotService.getTireNum());
     }
+
+    @GetMapping("/getBrandPie")
+    public Result getBrandPie(){
+        return Result.success(dotService.getBrandPie());
+    }
 }
 

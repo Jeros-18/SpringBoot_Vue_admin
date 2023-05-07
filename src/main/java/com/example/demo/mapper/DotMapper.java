@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -30,4 +31,7 @@ public interface DotMapper extends BaseMapper<Dot> {
     Page<Dot> findPageLocal(Page<Dot> page, @Param("localid") Integer localid);
 
     Integer getTireNum();
+
+
+    List<Map<String, Integer>> getBrandPie();
 }

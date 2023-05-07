@@ -53,4 +53,16 @@
         SELECT COUNT(*) FROM Dot
         WHERE is_delete=0;
     </select>
+
+    <!--    绘制饼状图 品牌类型占比-->
+    <select id="getBrandPie" resultType="java.util.Map">
+
+        SELECT brand_id AS ty ,CONVERT((COUNT(1)/(SELECT COUNT(1) FROM dot WHERE is_delete=0)*100),DECIMAL(10,2)) AS proption
+        FROM dot
+        WHERE is_delete=0
+        GROUP BY brand_id
+    </select>
+
+
+
 </mapper>

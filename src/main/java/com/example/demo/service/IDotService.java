@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.models.auth.In;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -27,4 +28,6 @@ public interface IDotService extends IService<Dot> {
     Page<Dot> findPageLocal(Page<Dot> page, Integer localid);
 
     Integer getTireNum();
+
+    List<Map<String,Integer>> getBrandPie();
 }
