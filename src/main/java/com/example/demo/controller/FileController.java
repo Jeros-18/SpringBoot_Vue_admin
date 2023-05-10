@@ -181,42 +181,20 @@ public class FileController {
         img.setKuang(kuangUrl);
         img.setRecog(recogUrl);
         imgMapper.insert(img);
-//       对 D:/aprograme1/finalDoc/img2中的所有图片进行目标检测，结果存到exp中
-        detectCamera(request);
+//       // 3568中的图片   目标检测有定位的图片，+定位信息
+        usePython("D:\\PycharmProjects\\yolov5-6.0\\detect2.py");
 //        对exp中的图片-裁剪
-        cai(request);
+        usePython("D:\\PycharmProjects\\PaddleOCR\\cai2.py");
 //        识别-pic_extracted中的图片=裁剪区域
-        recognise();
+        //        usePython("D:\\PycharmProjects\\PaddleOCR\\test3.py");
+
+
+
 
         return url;
     }
-    // 3568中的图片   目标检测有定位的图片，+定位信息
-    public void  detectCamera(HttpServletRequest request){
 
 
-        try {
-            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
-            // 我猜是通过命令行指令？
-            String[] args = new String[]{"python","D:\\PycharmProjects\\yolov5-6.0\\detect2.py"};
-            // 执行py文件
-            Process process = Runtime.getRuntime().exec(args);
-            // 获取输出的结果（打印在控制台的字符？）
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line = in.readLine();
-            while(line!=null){
-                // 显示结果
-                System.out.println("springboot执行python结果:"+line);
-                line = in.readLine();
-            }
-            in.close();
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        System.out.println("检测框选定位任务已完成");
-    }
 
 
     @PostMapping("/upload2")
@@ -273,11 +251,14 @@ public class FileController {
         usePython("D:\\PycharmProjects\\PaddleOCR\\delete0.py");
 
 //       对 D:/files/temp/tire中的所有图片进行目标检测，结果存到expCamera中
-        detect(request);
+        usePython("D:\\PycharmProjects\\yolov5-6.0\\detect.py");
+
 //        对expCamera中的图片-裁剪
-        cai(request);
+        usePython("D:\\PycharmProjects\\PaddleOCR\\cai2.py");
+
 //        识别-pic_extractedCamera中的图片=裁剪区域
-        recognise();
+//        usePython("D:\\PycharmProjects\\PaddleOCR\\test3.py");
+
 
         usePython("D:\\PycharmProjects\\PaddleOCR\\deleteTire.py");
 
@@ -317,91 +298,7 @@ public class FileController {
 
 
 
-    // 目标检测有定位的图片，+定位信息
-    public void  detect(HttpServletRequest request){
 
-
-        try {
-            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
-            // 我猜是通过命令行指令？
-            String[] args = new String[]{"python","D:\\PycharmProjects\\yolov5-6.0\\detect.py"};
-            // 执行py文件
-            Process process = Runtime.getRuntime().exec(args);
-            // 获取输出的结果（打印在控制台的字符？）
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line = in.readLine();
-            while(line!=null){
-                // 显示结果
-                System.out.println("springboot执行python结果:"+line);
-                line = in.readLine();
-            }
-            in.close();
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        System.out.println("检测框选定位任务已完成");
-    }
-
-
-
-//    裁剪
-public void  cai(HttpServletRequest request){
-
-
-    try {
-        // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
-        // 我猜是通过命令行指令？
-        String[] args = new String[]{"python","D:\\PycharmProjects\\PaddleOCR\\cai2.py"};
-        // 执行py文件
-        Process process = Runtime.getRuntime().exec(args);
-        // 获取输出的结果（打印在控制台的字符？）
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line = in.readLine();
-        while(line!=null){
-            // 显示结果
-            System.out.println("springboot执行python结果:"+line);
-            line = in.readLine();
-        }
-        in.close();
-        process.waitFor();
-    } catch (IOException | InterruptedException e) {
-        e.printStackTrace();
-    }
-
-
-    System.out.println("裁剪任务已完成");
-}
-
-    //    识别
-    public void  recognise(){
-
-
-        try {
-            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
-            // 我猜是通过命令行指令？
-            String[] args = new String[]{"python","D:\\PycharmProjects\\PaddleOCR\\cai2.py"};
-            // 执行py文件
-            Process process = Runtime.getRuntime().exec(args);
-            // 获取输出的结果（打印在控制台的字符？）
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line = in.readLine();
-            while(line!=null){
-                // 显示结果
-                System.out.println("springboot执行python结果:"+line);
-                line = in.readLine();
-            }
-            in.close();
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        System.out.println("识别任务已完成");
-    }
     /**
      * 文件下载接口   http://localhost:9090/file/{fileUUID}
      * @param fileUUID
