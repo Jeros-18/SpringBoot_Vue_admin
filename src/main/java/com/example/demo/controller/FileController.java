@@ -12,6 +12,7 @@ import com.example.demo.entity.Files;
 import com.example.demo.entity.Img;
 import com.example.demo.mapper.FileMapper;
 import com.example.demo.mapper.ImgMapper;
+import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -243,23 +244,19 @@ public class FileController {
 //        kuangUrl="http://" + serverIp + ":9090/exp"+(i++)+"/" + fileUUID;
         // 上传文件到磁盘
 
-        kuangUrl="http://" + serverIp + ":9090/exp"+"/" + originalFilename;
-        recogUrl="http://" + serverIp + ":9090/result"+"/" + originalFilename;
-
-            // 上传文件到磁盘
-            file.transferTo(uploadFile);
-            // 数据库若不存在重复文件，则不删除刚才上传的文件
-            url = "http://" + serverIp + ":9090/file/" + originalFilename;
 
 
-        // 存储数据库
-        Files saveFile = new Files();
-        saveFile.setName(originalFilename);
-        saveFile.setType(type);
-        saveFile.setSize(size/1024); // 单位 kb
-        saveFile.setUrl(url);
+        // 上传文件到磁盘
+        file.transferTo(uploadFile);
+        // 数据库若不存在重复文件，则不删除刚才上传的文件
+//        url = "http://" + serverIp + ":9090/file/" + originalFilename;
 
-        fileMapper.insert(saveFile);
+
+        url="http://" + serverIp + ":9090/tire/" + originalFilename;
+        kuangUrl="http://" + serverIp + ":9090/temp/exp/" + originalFilename;
+        recogUrl="http://" + serverIp + ":9090/temp/result/" + originalFilename;
+
+
 
         // 存储临时表，为了显示检测和识别效果
         Img img = new Img();
@@ -268,6 +265,13 @@ public class FileController {
         img.setKuang(kuangUrl);
         img.setRecog(recogUrl);
         imgMapper.insert(img);
+
+
+        //        移动cai/kuang result
+        usePython("D:\\PycharmProjects\\PaddleOCR\\delete.py");
+        //        删除exp +
+        usePython("D:\\PycharmProjects\\PaddleOCR\\delete0.py");
+
 //       对 D:/files/temp/tire中的所有图片进行目标检测，结果存到expCamera中
         detect(request);
 //        对expCamera中的图片-裁剪
@@ -275,8 +279,9 @@ public class FileController {
 //        识别-pic_extractedCamera中的图片=裁剪区域
         recognise();
 
-//        删除exp + 移动cai result
-        usePython("D:\\PycharmProjects\\PaddleOCR\\delete.py");
+        usePython("D:\\PycharmProjects\\PaddleOCR\\deleteTire.py");
+
+
         return url;
     }
 

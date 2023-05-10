@@ -26,7 +26,7 @@ mybatis-plus:
 files:
   upload:
     path: D:/files/
-    path2: D:/files/temp/tire/
+    path2: D:/aprograme1/after/src/main/resources/static/temp/tire/
     detect1Path: D:/files/detect1/
     detect2Path: D:/files/detect2/
     recognisePath: D:/files/recognise/
