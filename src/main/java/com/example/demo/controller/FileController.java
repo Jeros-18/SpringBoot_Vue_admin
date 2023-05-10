@@ -231,8 +231,8 @@ public class FileController {
 
 
         url="http://" + serverIp + ":9090/tire/" + originalFilename;
-        kuangUrl="http://" + serverIp + ":9090/temp/exp/" + originalFilename;
-        recogUrl="http://" + serverIp + ":9090/temp/result/" + originalFilename;
+        kuangUrl="http://" + serverIp + ":9090/exp/" + originalFilename;
+        recogUrl="http://" + serverIp + ":9090/result/" + originalFilename;
 
 
 
@@ -245,10 +245,7 @@ public class FileController {
         imgMapper.insert(img);
 
 
-        //        移动cai/kuang result
-        usePython("D:\\PycharmProjects\\PaddleOCR\\delete.py");
-        //        删除exp +
-        usePython("D:\\PycharmProjects\\PaddleOCR\\delete0.py");
+
 
 //       对 D:/files/temp/tire中的所有图片进行目标检测，结果存到expCamera中
         usePython("D:\\PycharmProjects\\yolov5-6.0\\detect.py");
@@ -259,6 +256,11 @@ public class FileController {
 //        识别-pic_extractedCamera中的图片=裁剪区域
 //        usePython("D:\\PycharmProjects\\PaddleOCR\\test3.py");
         usePythonParameter("D:\\PycharmProjects\\PaddleOCR\\test3.py",originalFilename);
+
+        //        移动cai/kuang result
+        usePython("D:\\PycharmProjects\\PaddleOCR\\delete.py");
+        //        删除exp +
+        usePython("D:\\PycharmProjects\\PaddleOCR\\delete0.py");
 
         usePython("D:\\PycharmProjects\\PaddleOCR\\deleteTire.py");
 
