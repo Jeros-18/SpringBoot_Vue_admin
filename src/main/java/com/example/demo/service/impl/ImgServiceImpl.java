@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ public class ImgServiceImpl extends ServiceImpl<ImgMapper, Img> implements IImgS
     @Resource
     private ImgMapper imgMapper;
     @Override
-    public Img findMaxTime() {
+    public List<Img> findMaxTime() {
         return imgMapper.findMaxTime();
     }
 }

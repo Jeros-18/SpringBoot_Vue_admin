@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.entity.Img;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,5 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IImgService extends IService<Img> {
 
-    Img findMaxTime();
+    List<Img> findMaxTime();
 }
