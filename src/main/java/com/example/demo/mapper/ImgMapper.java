@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2023-05-07
  */
 public interface ImgMapper extends BaseMapper<Img> {
-
+    Img findMaxTime();
 }

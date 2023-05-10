@@ -68,14 +68,14 @@ public class ImgController {
     }
 
     @GetMapping("/time")
-    public Result findBetweenTime() {
-        LocalDateTime dateTime = LocalDateTime.now(); // get the current date and time
+    public Result findMaxTime() {
+//        LocalDateTime dateTime = LocalDateTime.now(); // get the current date and time
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//        String time = dateTime.format(formatter);
+//        System.out.println(time);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String time = dateTime.format(formatter);
-        System.out.println(time);
-
-        return Result.success(imgService.list());
+        return Result.success(imgService.findMaxTime());
     }
 }
 
