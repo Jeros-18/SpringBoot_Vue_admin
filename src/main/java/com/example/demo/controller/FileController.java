@@ -40,6 +40,12 @@ public class FileController {
     private String fileUploadPath;
     @Value("${files.upload.path2}")
     private String fileUploadPath2;
+    @Value("${files.upload.detect1Path}")
+    private String detect1Path;
+    @Value("${files.upload.detect2Path}")
+    private String detect2Path;
+    @Value("${files.upload.recognisePath}")
+    private String recognisePath;
 
     @Value("${server.ip}")
     private String serverIp;
@@ -119,8 +125,9 @@ public class FileController {
         return url;
     }
 
-    @PostMapping("/upload2")
-    public String upload2(@RequestParam MultipartFile file,HttpServletRequest request) throws IOException {
+//    对3568上传的图片进行识别
+    @PostMapping("/upload3")
+    public String upload3(@RequestParam MultipartFile file,HttpServletRequest request) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String type = FileUtil.extName(originalFilename);
         long size = file.getSize();
@@ -173,13 +180,137 @@ public class FileController {
         img.setKuang(kuangUrl);
         img.setRecog(recogUrl);
         imgMapper.insert(img);
-
-        detect(request);
-        detect2(request);
+//       对 D:/aprograme1/finalDoc/img2中的所有图片进行目标检测，结果存到exp中
+        detectCamera(request);
+//        对exp中的图片-裁剪
+        cai(request);
+//        识别-pic_extracted中的图片=裁剪区域
         recognise();
 
         return url;
     }
+    // 3568中的图片   目标检测有定位的图片，+定位信息
+    public void  detectCamera(HttpServletRequest request){
+
+
+        try {
+            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
+            // 我猜是通过命令行指令？
+            String[] args = new String[]{"python","D:\\PycharmProjects\\yolov5-6.0\\detect2.py"};
+            // 执行py文件
+            Process process = Runtime.getRuntime().exec(args);
+            // 获取输出的结果（打印在控制台的字符？）
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = in.readLine();
+            while(line!=null){
+                // 显示结果
+                System.out.println("springboot执行python结果:"+line);
+                line = in.readLine();
+            }
+            in.close();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("检测框选定位任务已完成");
+    }
+
+
+    @PostMapping("/upload2")
+    public String upload2(@RequestParam MultipartFile file,HttpServletRequest request) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        String type = FileUtil.extName(originalFilename);
+        long size = file.getSize();
+
+        // 定义一个文件唯一的标识码
+//        String fileUUID = IdUtil.fastSimpleUUID() + StrUtil.DOT + type;
+
+        File uploadFile = new File(fileUploadPath2 + originalFilename);
+        // 判断配置的文件目录是否存在，若不存在则创建一个新的文件目录
+        File parentFile = uploadFile.getParentFile();
+        if(!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+
+        String kuangUrl = null;
+        String recogUrl = null;
+
+        String url;
+        int i=1;
+
+//        kuangUrl="http://" + serverIp + ":9090/exp"+(i++)+"/" + fileUUID;
+        // 上传文件到磁盘
+
+        kuangUrl="http://" + serverIp + ":9090/exp"+"/" + originalFilename;
+        recogUrl="http://" + serverIp + ":9090/result"+"/" + originalFilename;
+
+            // 上传文件到磁盘
+            file.transferTo(uploadFile);
+            // 数据库若不存在重复文件，则不删除刚才上传的文件
+            url = "http://" + serverIp + ":9090/file/" + originalFilename;
+
+
+        // 存储数据库
+        Files saveFile = new Files();
+        saveFile.setName(originalFilename);
+        saveFile.setType(type);
+        saveFile.setSize(size/1024); // 单位 kb
+        saveFile.setUrl(url);
+
+        fileMapper.insert(saveFile);
+
+        // 存储临时表，为了显示检测和识别效果
+        Img img = new Img();
+        img.setName(originalFilename);
+        img.setYuan(url);
+        img.setKuang(kuangUrl);
+        img.setRecog(recogUrl);
+        imgMapper.insert(img);
+//       对 D:/files/temp/tire中的所有图片进行目标检测，结果存到expCamera中
+        detect(request);
+//        对expCamera中的图片-裁剪
+        cai(request);
+//        识别-pic_extractedCamera中的图片=裁剪区域
+        recognise();
+
+//        删除exp + 移动cai result
+        usePython("D:\\PycharmProjects\\PaddleOCR\\delete.py");
+        return url;
+    }
+
+
+
+    // 删除
+    public void  usePython(String path){
+
+
+        try {
+            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
+            // 我猜是通过命令行指令？
+            String[] args = new String[]{"python",path};
+            // 执行py文件
+            Process process = Runtime.getRuntime().exec(args);
+            // 获取输出的结果（打印在控制台的字符？）
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = in.readLine();
+            while(line!=null){
+                // 显示结果
+                System.out.println("springboot执行python结果:"+line);
+                line = in.readLine();
+            }
+            in.close();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println(path+"任务已完成");
+    }
+
+
 
     // 目标检测有定位的图片，+定位信息
     public void  detect(HttpServletRequest request){
@@ -209,8 +340,10 @@ public class FileController {
         System.out.println("检测框选定位任务已完成");
     }
 
+
+
 //    裁剪
-public void  detect2(HttpServletRequest request){
+public void  cai(HttpServletRequest request){
 
 
     try {

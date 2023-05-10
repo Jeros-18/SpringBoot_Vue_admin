@@ -26,5 +26,18 @@ mybatis-plus:
 files:
   upload:
     path: D:/files/
-    path2: D:/files/tire/
+    path2: D:/files/temp/tire/
+    detect1Path: D:/files/detect1/
+    detect2Path: D:/files/detect2/
+    recognisePath: D:/files/recognise/
 #    path: /home/files/
+
+#阿里云 OSS
+#不同的服务器，地址不同
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-hangzhou.aliyuncs.com
+      keyid: LTAI5tQZXNdiGawZkVJZqJNx
+      keysecret: 9TOsH1mCy9KOjpYZx1vT54HWFF3AGX
+      bucketname: ahpu-music
