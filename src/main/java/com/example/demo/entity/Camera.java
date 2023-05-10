@@ -40,7 +40,7 @@ public class Camera implements Serializable {
 
     private String recog;
 
-    private LocalDateTime time;
+    private LocalDateTime ctime;
 
     private Boolean isRecog;
 
