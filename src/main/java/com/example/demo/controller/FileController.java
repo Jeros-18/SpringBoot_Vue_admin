@@ -48,6 +48,8 @@ public class FileController {
     @Value("${files.upload.recognisePath}")
     private String recognisePath;
 
+    String yearReco = "1619";
+
     @Value("${server.ip}")
     private String serverIp;
 
@@ -216,6 +218,7 @@ public class FileController {
         String kuangUrl = null;
         String recogUrl = null;
 
+
         String url;
         int i=1;
 
@@ -236,13 +239,7 @@ public class FileController {
 
 
 
-        // 存储临时表，为了显示检测和识别效果
-        Img img = new Img();
-        img.setName(originalFilename);
-        img.setYuan(url);
-        img.setKuang(kuangUrl);
-        img.setRecog(recogUrl);
-        imgMapper.insert(img);
+
 
 
 
@@ -264,6 +261,14 @@ public class FileController {
 
         usePython("D:\\PycharmProjects\\PaddleOCR\\deleteTire.py");
 
+// 存储临时表，为了显示检测和识别效果
+        Img img = new Img();
+        img.setName(originalFilename);
+        img.setYuan(url);
+        img.setKuang(kuangUrl);
+        img.setRecog(recogUrl);
+        img.setYear(yearReco);
+        imgMapper.insert(img);
 
         return url;
     }
@@ -299,7 +304,7 @@ public class FileController {
     }
 
     // 删除
-    public void  usePythonParameter(String path,String parameter){
+    public void usePythonParameter(String path,String parameter){
 
 
         try {
@@ -311,11 +316,16 @@ public class FileController {
             // 获取输出的结果（打印在控制台的字符？）
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line = in.readLine();
+
             while(line!=null){
                 // 显示结果
                 System.out.println("springboot执行python结果:"+line);
                 line = in.readLine();
+                if(line!=null){
+                yearReco = line;}
             }
+
+
             in.close();
             process.waitFor();
         } catch (IOException | InterruptedException e) {
@@ -323,7 +333,9 @@ public class FileController {
         }
 
 
-        System.out.println(path+"任务已完成");
+        System.out.println(path+"任务已完成"+yearReco+"yearReco数据类型："+yearReco.getClass().toString());
+
+
     }
 
 

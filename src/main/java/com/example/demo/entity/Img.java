@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +38,8 @@ public class Img implements Serializable {
     private String part;
 
     private String recog;
+
+    private String year;
 
     private LocalDateTime ctime;
 
