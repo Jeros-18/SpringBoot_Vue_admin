@@ -258,7 +258,7 @@ public class FileController {
 
 //        识别-pic_extractedCamera中的图片=裁剪区域
 //        usePython("D:\\PycharmProjects\\PaddleOCR\\test3.py");
-
+        usePythonParameter("D:\\PycharmProjects\\PaddleOCR\\test3.py",originalFilename);
 
         usePython("D:\\PycharmProjects\\PaddleOCR\\deleteTire.py");
 
@@ -276,6 +276,34 @@ public class FileController {
             // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
             // 我猜是通过命令行指令？
             String[] args = new String[]{"python",path};
+            // 执行py文件
+            Process process = Runtime.getRuntime().exec(args);
+            // 获取输出的结果（打印在控制台的字符？）
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = in.readLine();
+            while(line!=null){
+                // 显示结果
+                System.out.println("springboot执行python结果:"+line);
+                line = in.readLine();
+            }
+            in.close();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println(path+"任务已完成");
+    }
+
+    // 删除
+    public void  usePythonParameter(String path,String parameter){
+
+
+        try {
+            // 一维数组，第二个参数是文件的路径，后面的是python代码的参数
+            // 我猜是通过命令行指令？
+            String[] args = new String[]{"python",path,parameter};
             // 执行py文件
             Process process = Runtime.getRuntime().exec(args);
             // 获取输出的结果（打印在控制台的字符？）
