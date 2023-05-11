@@ -158,13 +158,13 @@ public class FileController {
                 //        识别-pic_extractedCamera中的图片=裁剪区域
                 usePythonParameter("D:\\PycharmProjects\\PaddleOCR\\test3.py",list[i]);
 
-                url="http://" + serverIp + ":9090/tire/" + list[i];
+                url="http://" + serverIp + ":9090/tire/edge/" + list[i];
                 kuangUrl="http://" + serverIp + ":9090/exp/" + list[i];
                 recogUrl="http://" + serverIp + ":9090/result/" + list[i];
 
                 Camera camera = new Camera();
                 camera.setName(list[i]);
-//                camera.setYuan(url);
+                camera.setYuan(url);
                 camera.setKuang(kuangUrl);
                 camera.setRecog(recogUrl);
                 camera.setYear(yearReco);
@@ -179,8 +179,7 @@ public class FileController {
         usePython("D:\\PycharmProjects\\PaddleOCR\\delete.py");
         //        删除temp/exp
         usePython("D:\\PycharmProjects\\PaddleOCR\\delete0.py");
-        //        移动temp/tire  -> tire
-        usePython("D:\\PycharmProjects\\PaddleOCR\\deleteTire.py");
+
 
 
         return Result.success();
