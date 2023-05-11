@@ -14,6 +14,7 @@ import com.example.demo.entity.Img;
 import com.example.demo.mapper.CameraMapper;
 import com.example.demo.mapper.FileMapper;
 import com.example.demo.mapper.ImgMapper;
+import com.example.demo.service.ICameraService;
 import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.security.Security;
 import java.util.List;
 
 /**
@@ -66,6 +68,9 @@ public class FileController {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private ICameraService cameraService;
 
 
     /**
@@ -136,6 +141,7 @@ public class FileController {
 //    对3568上传的图片进行识别
     @GetMapping("/upload3")
     public Result upload3(){
+
         String kuangUrl = null;
         String recogUrl = null;
         String url;
@@ -154,6 +160,9 @@ public class FileController {
         if (file.isDirectory()) {
             String[] list = file.list();
             for (int i=0; i<list.length;i++){
+
+
+
                 System.out.println(list[i]); // list[i] 图片名
                 //        识别-pic_extractedCamera中的图片=裁剪区域
                 usePythonParameter("D:\\PycharmProjects\\PaddleOCR\\test3.py",list[i]);
@@ -168,11 +177,9 @@ public class FileController {
                 camera.setKuang(kuangUrl);
                 camera.setRecog(recogUrl);
                 camera.setYear(yearReco);
-                cameraMapper.insert(camera);
+                cameraService.saveOrUpdate(camera);
             }
         }
-
-
 
 
         //        移动temp/exp,kuang ,result   ->  exp,kuang,result

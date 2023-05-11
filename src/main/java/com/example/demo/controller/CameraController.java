@@ -41,6 +41,12 @@ public class CameraController {
         return Result.success();
     }
 
+    @DeleteMapping("/deleteAll")
+    public Result deleteAll(){
+        cameraService.remove(null);
+        return Result.success();
+    }
+
     @PostMapping("/del/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
         cameraService.removeByIds(ids);
