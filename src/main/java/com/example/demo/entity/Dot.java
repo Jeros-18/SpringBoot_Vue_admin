@@ -38,6 +38,8 @@ public class Dot implements Serializable {
     @TableField(exist = false)
     private String factoryName;
 
+    private String vin;
+
     private Integer year;
 
     @TableLogic
