@@ -34,11 +34,13 @@ public class Camera implements Serializable {
 
     private String yuan;
 
-    private byte[] part;
+    private String part;
 
     private String kuang;
 
     private String recog;
+
+    private String year;
 
     private LocalDateTime ctime;
 

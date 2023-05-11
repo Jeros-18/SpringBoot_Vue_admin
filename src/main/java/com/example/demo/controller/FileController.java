@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Constants;
 import com.example.demo.common.Result;
+import com.example.demo.entity.Camera;
 import com.example.demo.entity.Files;
 import com.example.demo.entity.Img;
+import com.example.demo.mapper.CameraMapper;
 import com.example.demo.mapper.FileMapper;
 import com.example.demo.mapper.ImgMapper;
 import javafx.application.Application;
@@ -58,6 +60,9 @@ public class FileController {
 
     @Resource
     private ImgMapper imgMapper;
+
+    @Resource
+    private CameraMapper cameraMapper;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -129,71 +134,56 @@ public class FileController {
     }
 
 //    对3568上传的图片进行识别
-    @PostMapping("/upload3")
-    public String upload3(@RequestParam MultipartFile file,HttpServletRequest request) throws IOException {
-        String originalFilename = file.getOriginalFilename();
-        String type = FileUtil.extName(originalFilename);
-        long size = file.getSize();
-
-        // 定义一个文件唯一的标识码
-        String fileUUID = IdUtil.fastSimpleUUID() + StrUtil.DOT + type;
-
-        File uploadFile = new File(fileUploadPath2 + fileUUID);
-        // 判断配置的文件目录是否存在，若不存在则创建一个新的文件目录
-        File parentFile = uploadFile.getParentFile();
-        if(!parentFile.exists()) {
-            parentFile.mkdirs();
-        }
-
+    @GetMapping("/upload3")
+    public Result upload3(){
         String kuangUrl = null;
         String recogUrl = null;
-
         String url;
-        int i=1;
 
-//        kuangUrl="http://" + serverIp + ":9090/exp"+(i++)+"/" + fileUUID;
-        kuangUrl="http://" + serverIp + ":9090/exp"+"/" + fileUUID;
-        recogUrl="http://" + serverIp + ":9090/result"+"/" + fileUUID;
-        // 获取文件的md5
-        String md5 = SecureUtil.md5(file.getInputStream());
-        // 从数据库查询是否存在相同的记录
-        Files dbFiles = getFileByMd5(md5);
-        if (dbFiles != null) {
-            url = dbFiles.getUrl();
-        } else {
-            // 上传文件到磁盘
-            file.transferTo(uploadFile);
-            // 数据库若不存在重复文件，则不删除刚才上传的文件
-            url = "http://" + serverIp + ":9090/file/" + fileUUID;
 
-        }
-        // 存储数据库
-        Files saveFile = new Files();
-        saveFile.setName(originalFilename);
-        saveFile.setType(type);
-        saveFile.setSize(size/1024); // 单位 kb
-        saveFile.setUrl(url);
-        saveFile.setMd5(md5);
-        fileMapper.insert(saveFile);
-
-        // 存储临时表，为了显示检测和识别效果
-        Img img = new Img();
-        img.setName(originalFilename);
-        img.setYuan(url);
-        img.setKuang(kuangUrl);
-        img.setRecog(recogUrl);
-        imgMapper.insert(img);
-//       // 3568中的图片   目标检测有定位的图片，+定位信息
+//       对 D:/aprograme1/finalDoc/img2中的所有图片进行目标检测，结果存到temp/exp中
         usePython("D:\\PycharmProjects\\yolov5-6.0\\detect2.py");
-//        对exp中的图片-裁剪
+
+//        对temp/exp中的图片-裁剪,保存到temp/kuang
         usePython("D:\\PycharmProjects\\PaddleOCR\\cai2.py");
-//        识别-pic_extracted中的图片=裁剪区域
-        //        usePython("D:\\PycharmProjects\\PaddleOCR\\test3.py");
+
+
+//        对 D:/aprograme1/finalDoc/img2中的所有图片,遍历进行ocr识别（temp/result）+信息存入数据库
+        String dirName="D:\\aprograme1\\finalDoc\\img2";
+        File file = new File(dirName);
+        if (file.isDirectory()) {
+            String[] list = file.list();
+            for (int i=0; i<list.length;i++){
+                System.out.println(list[i]); // list[i] 图片名
+                //        识别-pic_extractedCamera中的图片=裁剪区域
+                usePythonParameter("D:\\PycharmProjects\\PaddleOCR\\test3.py",list[i]);
+
+                url="http://" + serverIp + ":9090/tire/" + list[i];
+                kuangUrl="http://" + serverIp + ":9090/exp/" + list[i];
+                recogUrl="http://" + serverIp + ":9090/result/" + list[i];
+
+                Camera camera = new Camera();
+                camera.setName(list[i]);
+//                camera.setYuan(url);
+                camera.setKuang(kuangUrl);
+                camera.setRecog(recogUrl);
+                camera.setYear(yearReco);
+                cameraMapper.insert(camera);
+            }
+        }
 
 
 
 
-        return url;
+        //        移动temp/exp,kuang ,result   ->  exp,kuang,result
+        usePython("D:\\PycharmProjects\\PaddleOCR\\delete.py");
+        //        删除temp/exp
+        usePython("D:\\PycharmProjects\\PaddleOCR\\delete0.py");
+        //        移动temp/tire  -> tire
+        usePython("D:\\PycharmProjects\\PaddleOCR\\deleteTire.py");
+
+
+        return Result.success();
     }
 
 
