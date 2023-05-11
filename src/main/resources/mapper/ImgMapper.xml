@@ -4,4 +4,9 @@
     <select id="findMaxTime" resultType="com.example.demo.entity.Img">
         SELECT * FROM img WHERE ctime=(SELECT MAX(ctime) FROM img)
     </select>
+
+    <select id="save" resultType="com.example.demo.entity.Img">
+        insert if not exists into img(imgname,yuan,kuang,recog,ryear) values (#{imgname},#{yuan},#{kuang},#{recog},#{ryear})
+    </select>
+
 </mapper>

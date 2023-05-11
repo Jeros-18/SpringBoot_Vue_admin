@@ -259,11 +259,11 @@ public class FileController {
 
 // 存储临时表，为了显示检测和识别效果
         Img img = new Img();
-        img.setName(originalFilename);
+        img.setImgname(originalFilename);
         img.setYuan(url);
         img.setKuang(kuangUrl);
         img.setRecog(recogUrl);
-        img.setYear(yearReco);
+        img.setRyear(yearReco);
         imgMapper.insert(img);
 
         return url;

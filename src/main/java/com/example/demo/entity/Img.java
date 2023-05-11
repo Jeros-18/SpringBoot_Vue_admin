@@ -30,7 +30,7 @@ public class Img implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String name;
+    private String imgname;
     private String yuan;
 
     private String kuang;
@@ -39,7 +39,7 @@ public class Img implements Serializable {
 
     private String recog;
 
-    private String year;
+    private String ryear;
 
     private LocalDateTime ctime;
 

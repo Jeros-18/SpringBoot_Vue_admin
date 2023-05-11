@@ -15,4 +15,6 @@ import java.util.List;
  */
 public interface ImgMapper extends BaseMapper<Img> {
     List<Img> findMaxTime();
+
+    Img save(Img img);
 }
